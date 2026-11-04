@@ -7,6 +7,7 @@ import ProjectDetailsPage from "./pages/ProjectDetailsPage";
 import EditProjectPage from "./pages/EditProjectPage";
 
 import Navbar from "./components/Navbar";
+import Error from "./pages/Error";
 
 function App() {
 
@@ -25,6 +26,7 @@ function App() {
       <Route path="/projects/edit/:projectId" element={ <EditProjectPage /> } />
 
       {/* //! error handling routes should be here */}
+      <Route path="/error" element={ <Error /> }/>
 
     </Routes>
     

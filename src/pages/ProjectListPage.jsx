@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios"; // used for calling the API
 
 import ProjectCard from "../components/ProjectCard"; // used to render each Project
 
 function ProjectListPage() {
+
+  const navigate = useNavigate()
 
   const [ allProjects, setAllProjects ] = useState(null)
   const [ isLoading, setIsLoading ] = useState(true)
@@ -17,12 +19,16 @@ function ProjectListPage() {
     try {
 
       // call the API here to receive all projects...
+      const response = await axios.get(`${import.meta.env.VITE_API_URL}/projects`)
+      console.log(response)
+      setAllProjects(response.data)
+
 
       setIsLoading(false) // render the component once the data finished loading
 
     } catch (error) {
       console.log(error)
-      //todo proper error handling here
+      navigate("/error")
     }
   }
 
@@ -37,6 +43,9 @@ function ProjectListPage() {
 
       {/* ... list of all projects should be rendered here   */}
       {/* ... for each project, we should render one ProjectCard */}
+      {allProjects.map((project) => {
+        return <ProjectCard key={project.id} {...project}/>
+      })}
        
     </div>
   );

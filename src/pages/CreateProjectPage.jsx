@@ -12,8 +12,15 @@ function CreateProjectPage() {
   const handleSubmit = async(e) => {
     e.preventDefault();
 
+    const body = {
+      title: title,
+      description: description
+    }
+
     try {
       // call the API here to create one project...
+      await axios.post(`${import.meta.env.VITE_API_URL}/projects`, body)
+      navigate("/projects")
       
     } catch (error) {
       console.log(error)

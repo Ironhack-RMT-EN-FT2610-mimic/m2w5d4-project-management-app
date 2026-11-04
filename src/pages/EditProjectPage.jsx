@@ -9,14 +9,36 @@ function EditProjectPage() {
   
   const [ title, setTitle ] = useState("");
   const [ description, setDescription ] = useState("");
-  // const [ isLoading, setIsLoading ] = useState(true)
+  const [ isLoading, setIsLoading ] = useState(true)
+
+  useEffect(() => {  
+    getData()
+  }, [])
+
+  const getData = async() => {
+    try {
+      const response = await axios.get(`${import.meta.env.VITE_API_URL}/projects/${projectId}`)
+
+      setTitle(response.data.title)
+      setDescription(response.data.description)
+      setIsLoading(false)
+    } catch (error) {
+      console.log(error)
+      //todo proper error handling here
+    }
+  }
 
   const handleFormSubmit = async(e) => {
     e.preventDefault();
 
+    const body = {
+      title: title,
+      description: description
+    }
+
     try {
-      // call the API here to edit one project...
-      
+      await axios.put(`${import.meta.env.VITE_API_URL}/projects/${projectId}`, body)
+      navigate(`/projects/${projectId}`)
     } catch (error) {
       console.log(error)
       //todo proper error handling here 
@@ -25,15 +47,15 @@ function EditProjectPage() {
 
   const deleteProject = async() => {
     try {
-      // call the API here to delete one project...
-      
+      await axios.delete(`${import.meta.env.VITE_API_URL}/projects/${projectId}`)
+      navigate("/projects")
     } catch (error) {
       console.log(error)
       //todo proper error handling here
     }
   }; 
 
-  // if (isLoading) return <h3>Loading...</h3> //todo proper loading animation here
+  if (isLoading) return <h3>Loading...</h3> //todo proper loading animation here
 
   return (
     <div className="EditProjectPage">
